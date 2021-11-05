@@ -10,7 +10,7 @@ export const FETCH_SUCCESS = 'FETCH_SUCCESS';
 export const FETCH_FAIL = 'FETCH_FAIL';
 
 export const ADD_SMURF = 'ADD_SMURF';
-export const ERROR = 'ERROR';
+export const SET_ERROR= 'SET_ERROR';
 
 
 
@@ -20,29 +20,42 @@ export const fetchSmurfs = () => {
     return(dispatch) => {
         dispatch(fetchStart());
 
-        axios.get('https://localhost:3333/smurfs/')
+        axios.get('https://localhost:3333/smurfs')
         .then(response => {
             dispatch(fetchSuccess(response.data));
         })
-        .catch(error => {dispatch(fetchFail(error))})
-    }
+        .catch(error => {dispatch(fetchFail(error.message))})
+    };
+};
+
+export const addSmurf = (smurf) => dispatch => {
+    axios.post('http://localhost:3333/smurfs',smurf)
+    .then((res) => {
+        dispatch({ type: FETCH_SUCCESS, payload: res.data })
+    })
+    .catch(error => {
+        dispatch({ type: FETCH_FAIL, payload: error.response.data });
+    });
 }
 export const  fetchStart =()=> {
     return({type: FETCH_START})
 }
 
-export const fetchSuccess =(smurf)=> {
-    return({type: FETCH_SUCCESS, payload: smurf})
+export const fetchSuccess =(smurfs)=> {
+    return({type: FETCH_SUCCESS, payload: smurfs})
 }
 
 export const fetchFail = (error) => {
     return({type: FETCH_FAIL, payload: error})
 }
 
-export const addSmurf = ({name,position,nickname,description}) => {
-    return({type: ADD_SMURF, payload: {name,position,nickname,description}})
-}
+// // export const addSmurf = ({smurfs:name,position,nickname,description}) => {
+//     return({type: ADD_SMURF, payload: {name,position,nickname,description}})
+// }
 
-export const errorMessage = (message) => {
-    return({type: ERROR, payload: message})
-} 
+// export const errorMessage = (message) => {
+//     return({type:SET_ERROR, payload: message})
+// } 
+export const setError = (errorMessage) => dispatch => {
+    dispatch({ type: SET_ERROR,payload:errorMessage});
+}

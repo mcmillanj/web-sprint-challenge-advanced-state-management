@@ -6,17 +6,16 @@ import Header from './components/Header';
 import { fetchSmurfs} from './actions'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
-// import axios from 'axios';
+ import axios from 'axios';
 
 
 class App extends Component {
 componentDidMount(){
   this.props.fetchSmurfs();
   console.log("component mounted");
- 
-//  axios.get('http://localhost:3333/smurfs')	   
-//  .then(res => console.log(res))	
-//  .catch(error => console.log('Error', error));	
+ axios.get('http://localhost:3333/smurfs')	   
+ .then(res => console.log(res))	
+ .catch(error => console.log('Error', error));	
  }  
 
 

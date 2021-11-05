@@ -1,10 +1,10 @@
-import { FETCH_START,FETCH_SUCCESS,FETCH_FAIL,ADD_SMURF,ERROR } from "../actions"
+import { FETCH_START,FETCH_SUCCESS,FETCH_FAIL,ADD_SMURF,SET_ERROR } from "../actions"
 
 
 export const initialState = {
     smurfs:[],
     isLoading: false,
-    errorMessage: ''
+    errormessage:''
 }	
 
 
@@ -15,30 +15,32 @@ const reducer = (state = initialState,action) =>{
             return({
                 ...state,
                 isLoading:true
-            })
+            });
         case(FETCH_SUCCESS):
             return({
                 ...state,
                 isLoading:false,
-                smurfs: action.payload
-            })
+                smurfs: action.payload,
+                error:" "
+            });
         case (FETCH_FAIL):
             return({
                 ...state,
                 isLoading:false,
                 error:action.payload
-            })
+                
+            });
         case(ADD_SMURF):
-           const newSmurf ={...action.payload,id: Date.now()}
+           const addSmurf ={...action.payload,id: Date.now()}
             return({
                 ...state,
                 smurfs:[...state.smurfs,
                     action.payload]
-            })    
-        case(ERROR):
+            });  
+        case(SET_ERROR):
             return({
                 ...state,
-                errorMessage:action.payload
+               error:  "Name, position and nickname fields are required.",
             })
         default:
             return state;
